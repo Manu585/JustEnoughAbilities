@@ -2,8 +2,9 @@ main: ${plugin.mainClass}
 name: ${plugin.name}
 version: ${plugin.version}
 description: ${plugin.description}
-author: ${plugin.author}
-website: https://github.com/Manu585/CisCov
+authors:
+  - Manunu_
+website: https://github.com/Manu585/JustEnoughAbilities
 api-version: 1.21
 depend:
   - ProjectKorra

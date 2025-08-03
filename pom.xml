@@ -14,7 +14,6 @@
         <plugin.version>${project.version}</plugin.version>
         <plugin.name>${project.artifactId}</plugin.name>
         <plugin.description>Triple Thread Triat Hackathon</plugin.description>
-        <plugin.author>Manu</plugin.author>
 
         <plugin.outputdirectory>S:\Minecraft Servers\TestingServer\plugins</plugin.outputdirectory>
 

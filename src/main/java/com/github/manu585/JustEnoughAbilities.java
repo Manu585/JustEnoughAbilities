@@ -2,7 +2,7 @@ package com.github.manu585;
 
 import com.github.manu585.bending.air.listener.AirAbilityListener;
 import com.github.manu585.configuration.ConfigManager;
-import com.github.manu585.listener.ConfigReloadListener;
+import com.github.manu585.listener.BendingCommandConfigReloadListener;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
@@ -31,7 +31,7 @@ public class JustEnoughAbilities extends JavaPlugin {
         CoreAbility.registerPluginAbilities(plugin, "com.github.manu585.bending");
 
         registerListeners(
-                new ConfigReloadListener(plugin),
+                new BendingCommandConfigReloadListener(plugin),
                 new AirAbilityListener()
         );
     }

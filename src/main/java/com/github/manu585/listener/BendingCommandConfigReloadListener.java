@@ -14,17 +14,29 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Credits for listening to bending commands: Jedk1
  */
 public class BendingCommandConfigReloadListener implements Listener {
     private final JustEnoughAbilities plugin;
-    private final String[] commandAliases = {"/b", "/pk", "/projectkorra", "/bending", "/mtla", "/tla", "/korra", "/bend"};
+
+    private final Map<String, PkCommandEvent.CommandType> aliasToType = new HashMap<>();
+    private final Set<String> baseCommand = Set.of("/b", "/pk", "/projectkorra", "/bending", "/mtla", "/tla", "/korra", "/bend");
 
     public BendingCommandConfigReloadListener(final JustEnoughAbilities plugin) {
         this.plugin = plugin;
+
+        for (PKCommand command : PKCommand.instances.values()) {
+            PkCommandEvent.CommandType type = PkCommandEvent.CommandType.getType(command.getName());
+            if (type == null) continue;
+            for (String alias : command.getAliases()) {
+                aliasToType.put(alias.toLowerCase(), type);
+            }
+        }
     }
 
     @EventHandler
@@ -44,16 +56,12 @@ public class BendingCommandConfigReloadListener implements Listener {
 
     @EventHandler
     public void onPlayerCommand(final PlayerCommandPreprocessEvent event) {
-        String[] args = event.getMessage().toLowerCase().split("\\s+");
+        String[] split = event.getMessage().split("\\s+");
+        String command = split[0].toLowerCase();
 
-        if (Arrays.asList(commandAliases).contains(args[0]) && args.length >= 2) {
-            PkCommandEvent pkCommandEvent = new PkCommandEvent(event.getPlayer(), args, null);
-            for (PKCommand pkCommand : PKCommand.instances.values()) {
-                if (Arrays.asList(pkCommand.getAliases()).contains(args[1].toLowerCase())) {
-                    pkCommandEvent = new PkCommandEvent(event.getPlayer(), args, PkCommandEvent.CommandType.getType(pkCommand.getName()));
-                }
-            }
-            plugin.getServer().getPluginManager().callEvent(pkCommandEvent);
+        if (baseCommand.contains(command) && split.length >= 2) {
+            PkCommandEvent.CommandType type = aliasToType.get(split[1].toLowerCase());
+            plugin.getServer().getPluginManager().callEvent(new PkCommandEvent(event.getPlayer(), split, type));
         }
     }
 

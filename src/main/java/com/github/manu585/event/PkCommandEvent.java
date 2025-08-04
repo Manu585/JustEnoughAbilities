@@ -29,8 +29,8 @@ public class PkCommandEvent extends Event {
 
     public PkCommandEvent(Player sender, String[] args, CommandType type) {
         this.sender = sender;
-        this.type = type;
         this.args = args;
+        this.type = type;
     }
 
     public Player getSender() {

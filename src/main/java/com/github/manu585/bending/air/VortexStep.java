@@ -1,6 +1,5 @@
 package com.github.manu585.bending.air;
 
-import com.github.manu585.JustEnoughAbilities;
 import com.github.manu585.bending.JeaAbility;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.AirAbility;

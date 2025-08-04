@@ -4,9 +4,13 @@ import com.github.manu585.JustEnoughAbilities;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigManager {
-    private static final Config defaultConfig = new Config(JustEnoughAbilities.getInstance(), "config.yml");
+    private final JustEnoughAbilities plugin;
+    private final Config defaultConfig;
 
-    public ConfigManager() {
+    public ConfigManager(JustEnoughAbilities plugin) {
+        this.plugin = plugin;
+        this.defaultConfig = new Config(plugin, "config.yml");
+
         createDefaults();
     }
 
@@ -16,11 +20,15 @@ public class ConfigManager {
         defaultConfig.save();
     }
 
-    public static FileConfiguration getDefaultConfig() {
+    public FileConfiguration getDefaultConfig() {
         return defaultConfig.get();
     }
 
-    public static Config getDefaultConfigInstance() {
+    public Config getDefaultConfigInstance() {
         return defaultConfig;
+    }
+
+    public JustEnoughAbilities getPlugin() {
+        return plugin;
     }
 }

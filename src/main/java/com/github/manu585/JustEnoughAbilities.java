@@ -27,7 +27,7 @@ public class JustEnoughAbilities extends JavaPlugin {
         plugin = this;
         PacketEvents.getAPI().init();
 
-        this.configManager = new ConfigManager();
+        this.configManager = new ConfigManager(plugin);
         CoreAbility.registerPluginAbilities(plugin, "com.github.manu585.bending");
 
         registerListeners(

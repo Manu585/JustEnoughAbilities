@@ -1,7 +1,6 @@
 package com.github.manu585.listener;
 
 import com.github.manu585.JustEnoughAbilities;
-import com.github.manu585.configuration.ConfigManager;
 import com.github.manu585.event.PkCommandEvent;
 import com.github.manu585.util.JustEnoughAbilitiesUtils;
 import com.projectkorra.projectkorra.command.PKCommand;
@@ -37,16 +36,15 @@ public class BendingCommandConfigReloadListener implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                ConfigManager.getDefaultConfigInstance().reload();
-                ConfigManager.getDefaultConfigInstance().save();
+                plugin.getConfigManager().getDefaultConfigInstance().reload();
+                plugin.getConfigManager().getDefaultConfigInstance().save();
             }
         }.runTaskLaterAsynchronously(plugin, 2); // Small delay
     }
 
     @EventHandler
     public void onPlayerCommand(final PlayerCommandPreprocessEvent event) {
-        String command = event.getMessage().toLowerCase();
-        String[] args = command.split("\\s+");
+        String[] args = event.getMessage().toLowerCase().split("\\s+");
 
         if (Arrays.asList(commandAliases).contains(args[0]) && args.length >= 2) {
             PkCommandEvent pkCommandEvent = new PkCommandEvent(event.getPlayer(), args, null);
@@ -61,16 +59,15 @@ public class BendingCommandConfigReloadListener implements Listener {
 
     @EventHandler
     public void onPkCommand(final PkCommandEvent event) {
+        if (event.getType() == null) return;
+
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (event.getType() == null) return;
-
                 switch (event.getType()) {
                     case WHO -> {
                         if (!event.getSender().hasPermission("bending.command.who")) return;
-                        if (event.getArgs().length <= 2) return;
-                        if (event.getArgs().length > 3) return;
+                        if (event.getArgs().length <= 2 || event.getArgs().length > 3) return;
 
                         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(event.getArgs()[2]);
                         if (!offlinePlayer.isOnline()) return;

@@ -33,7 +33,7 @@ public class VortexStep extends AirAbility implements AddonAbility, JeaAbility {
 
     @Override
     public String getName() {
-        return "";
+        return "VortexStep";
     }
 
     @Override
@@ -53,11 +53,16 @@ public class VortexStep extends AirAbility implements AddonAbility, JeaAbility {
 
     @Override
     public String getAuthor() {
-        return "";
+        return getJeaAuthors();
     }
 
     @Override
     public String getVersion() {
-        return "";
+        return getJeaVersion();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

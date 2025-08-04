@@ -3,6 +3,7 @@ package com.github.manu585;
 import com.github.manu585.bending.air.listener.AirAbilityListener;
 import com.github.manu585.configuration.ConfigManager;
 import com.github.manu585.listener.BendingCommandConfigReloadListener;
+import com.github.manu585.util.AuthorCache;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
@@ -25,6 +26,7 @@ public class JustEnoughAbilities extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        AuthorCache.cacheAuthorsUuidsAsync(plugin, getPluginMeta().getAuthors());
         PacketEvents.getAPI().init();
 
         this.configManager = new ConfigManager(plugin);

@@ -2,6 +2,7 @@ package com.github.manu585.listener;
 
 import com.github.manu585.JustEnoughAbilities;
 import com.github.manu585.event.PkCommandEvent;
+import com.github.manu585.util.AuthorCache;
 import com.github.manu585.util.JustEnoughAbilitiesUtils;
 import com.projectkorra.projectkorra.command.PKCommand;
 import com.projectkorra.projectkorra.event.BendingReloadEvent;
@@ -72,7 +73,7 @@ public class BendingCommandConfigReloadListener implements Listener {
                         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(event.getArgs()[2]);
                         if (!offlinePlayer.isOnline()) return;
 
-                        if (!Arrays.asList(JustEnoughAbilitiesUtils.getDeveloperUuids()).contains(offlinePlayer.getUniqueId().toString())) return;
+                        if (!AuthorCache.isDeveloper(offlinePlayer.getUniqueId())) return;
 
                         event.getSender().sendMessage(MiniMessage.miniMessage().deserialize("<color:#e8c410>JustEnoughAbilities Developer</color>"));
                     }

@@ -1,5 +1,6 @@
-package com.github.manu585.bending.air.tornadostep;
+package com.github.manu585.bending.air;
 
+import com.github.manu585.JustEnoughAbilities;
 import com.github.manu585.bending.JeaAbility;
 import com.projectkorra.projectkorra.ability.AddonAbility;
 import com.projectkorra.projectkorra.ability.AirAbility;
@@ -53,7 +54,7 @@ public class VortexStep extends AirAbility implements AddonAbility, JeaAbility {
 
     @Override
     public String getAuthor() {
-        return getJeaAuthors();
+        return getJeaAuthorsColored("Manunu_");
     }
 
     @Override
@@ -63,6 +64,6 @@ public class VortexStep extends AirAbility implements AddonAbility, JeaAbility {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return getJeaConfig().getBoolean("Air.Air.VortexStep.Enabled", true);
     }
 }

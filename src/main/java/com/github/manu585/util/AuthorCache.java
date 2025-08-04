@@ -13,25 +13,23 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-public class AuthorCache {
+public record AuthorCache(JustEnoughAbilities plugin) {
     private static final Map<String, UUID> authorUuidCache = new ConcurrentHashMap<>();
-    private static final Gson GSON = new Gson();
 
-    public static void cacheAuthorsUuidsAsync(JustEnoughAbilities plugin, List<String> authors) {
+    public void cacheAuthorsUuidsAsync(List<String> authors) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             for (String author : authors) {
                 try {
-                    UUID uuid = fetchMojangUuid(author, plugin);
+                    UUID uuid = fetchMojangUuid(author);
                     if (uuid != null) authorUuidCache.put(author, uuid);
                 } catch (URISyntaxException | IOException e) {
                     plugin.getLogger().log(Level.WARNING, "Mojang Session servers down. Couldn't fetch UUID for Developer players. [THIS IS A NOTIFICATION, NO BUG]");
                 }
             }
-            plugin.getLogger().log(Level.INFO, "Finished caching UUIDS! Cached: " + authorUuidCache.values());
         });
     }
 
-    private static UUID fetchMojangUuid(String name, JustEnoughAbilities plugin) throws URISyntaxException, IOException {
+    private UUID fetchMojangUuid(String name) throws URISyntaxException, IOException {
         URI uri = new URI("https://api.mojang.com/users/profiles/minecraft/" + name);
         HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
         connection.setConnectTimeout(2500);
@@ -50,20 +48,20 @@ public class AuthorCache {
             String json = jsonBuilder.toString();
             if (!json.contains("id")) return null;
 
-            JsonObject object = GSON.fromJson(json, JsonObject.class);
-            String id = object.get("id").getAsString();
-            String uuidStr = id.replaceFirst(
+            JsonObject object = new Gson().fromJson(json, JsonObject.class);
+
+            // Get UUID from JSON object and convert it into a valid UUID
+            return UUID.fromString(object.get("id").getAsString().replaceFirst(
                     "(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
-                    "$1-$2-$3-$4-$5");
-            return UUID.fromString(uuidStr);
+                    "$1-$2-$3-$4-$5"));
         }
+    }
+
+    public boolean isDeveloper(UUID uuid) {
+        return authorUuidCache.containsValue(uuid);
     }
 
     public static Map<String, UUID> getAuthorUuidCache() {
         return Collections.unmodifiableMap(authorUuidCache);
-    }
-
-    public static boolean isDeveloper(UUID uuid) {
-        return authorUuidCache.containsValue(uuid);
     }
 }

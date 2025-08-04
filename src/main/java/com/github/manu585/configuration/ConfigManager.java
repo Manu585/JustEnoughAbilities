@@ -17,6 +17,8 @@ public class ConfigManager {
     private void createDefaults() {
         FileConfiguration config = defaultConfig.get();
 
+        config.addDefault("Air.Air.VortexStep.Enabled", true);
+
         defaultConfig.save();
     }
 
